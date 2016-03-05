@@ -13,8 +13,8 @@ defmodule ExTrello.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", ExTrello do
-    pipe_through :browser # Use the default browser stack
+  scope "/api", ExTrello do
+    pipe_through :api # Use the default browser stack
 
     scope "/v1" do
       post "/registrations", RegistrationController, :create
@@ -22,8 +22,10 @@ defmodule ExTrello.Router do
 
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", ExTrello do
-  #   pipe_through :api
-  # end
+
+  scope "/", ExTrello do
+    pipe_through :browser # Use the default browser stack
+    get "*path", PageController, :index
+  end
+
 end

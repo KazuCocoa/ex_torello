@@ -1,8 +1,8 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { Router } from 'react-router';
-import invariant from 'invariant';
-import routers from '../routers';
+import React              from 'react';
+import { Provider }       from 'react-redux';
+import { Router }         from 'react-router';
+import invariant          from 'invariant';
+import routes             from '../routes';
 
 export default class Root extends React.Component {
   _renderRouter() {
@@ -13,7 +13,7 @@ export default class Root extends React.Component {
 
     return (
       <Router history={this.props.routerHistory}>
-        {routes}
+          {routes}
       </Router>
     );
   }
