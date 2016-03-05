@@ -12,8 +12,8 @@ config :logger, level: :warn
 # Configure your database
 config :ex_trello, ExTrello.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: "phoenix",
+  password: "postphoenixgres",
   database: "ex_trello_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
