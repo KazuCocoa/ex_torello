@@ -25947,6 +25947,8 @@
 
 	var initialState = {
 	  currentUser: null,
+	  socket: null,
+	  channel: null,
 	  error: null
 	};
 
@@ -25956,11 +25958,17 @@
 
 	  switch (action.type) {
 	    case _constants2.default.CURRENT_USER:
-	      return _extends({}, state, { currentUser: action.currentUser });
-	    case _constants2.default.SESSIONS_ERROR:
-	      return _extends({}, state, { error: action.error });
+	      return _extends({}, state, { currentUser: action.currentUser, error: null });
+
 	    case _constants2.default.USER_SIGNED_OUT:
 	      return initialState;
+
+	    case _constants2.default.SOCKET_CONNECTED:
+	      return _extends({}, state, { socket: action.socket, channel: action.channel });
+
+	    case _constants2.default.SESSIONS_ERROR:
+	      return _extends({}, state, { error: action.error });
+
 	    default:
 	      return state;
 	  }
@@ -26747,7 +26755,7 @@
 
 	var _new2 = _interopRequireDefault(_new);
 
-	var _new3 = __webpack_require__(269);
+	var _new3 = __webpack_require__(270);
 
 	var _new4 = _interopRequireDefault(_new3);
 
@@ -26883,6 +26891,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.setCurrentUser = setCurrentUser;
 
 	var _reactRouterRedux = __webpack_require__(234);
 
@@ -26957,6 +26966,28 @@
 	};
 
 	exports.default = Actions;
+	function setCurrentUser(dispatch, user) {
+	  dispatch({
+	    type: _constants2.default.CCURRENT_USER,
+	    currentUser: user
+	  });
+
+	  var socket = new _phoenix.Socket('/socket', {
+	    params: { token: localStorage.getItem('phoenixAuthToken') }
+	  });
+
+	  socket.connect();
+
+	  var channel = socket.channel('users:' + user.id);
+
+	  channel.join().receive('ok', function () {
+	    dispatch({
+	      type: _constants2.default.SOCKET_CONNECTED,
+	      socket: socket,
+	      channel: channel
+	    });
+	  });
+	};
 
 /***/ },
 /* 251 */
@@ -29186,7 +29217,7 @@
 
 	var _utils = __webpack_require__(251);
 
-	var _registrations = __webpack_require__(270);
+	var _registrations = __webpack_require__(269);
 
 	var _registrations2 = _interopRequireDefault(_registrations);
 
@@ -29317,6 +29348,52 @@
 	  value: true
 	});
 
+	var _reactRouterRedux = __webpack_require__(234);
+
+	var _constants = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../constants\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	var _utils = __webpack_require__(251);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Actions = {};
+
+	Actions.signUp = function (data) {
+	  return function (dispath) {
+	    (0, _utils.httpPost)('/api/v1/registrations', { user: data }).then(function (data) {
+	      localStorage.setItem('phoenixAuthToken', data.jwt);
+
+	      dispatch({
+	        type: _constants2.default.CURRENT_USER,
+	        currentUser: data.user
+	      });
+
+	      dispatch((0, _reactRouterRedux.pushPath)('/'));
+	    }).catch(function (error) {
+	      error.response.json().then(function (errorJSON) {
+	        dispatch({
+	          type: _constants2.default.REGISTRATIONS_ERROR,
+	          errors: errorJSON.errors
+	        });
+	      });
+	    });
+	  };
+	};
+
+	exports.default = Actions;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(6);
@@ -29434,52 +29511,6 @@
 	};
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(SessionsNew);
-
-/***/ },
-/* 270 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _reactRouterRedux = __webpack_require__(234);
-
-	var _constants = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../constants\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-	var _constants2 = _interopRequireDefault(_constants);
-
-	var _utils = __webpack_require__(251);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Actions = {};
-
-	Actions.signUp = function (data) {
-	  return function (dispath) {
-	    (0, _utils.httpPost)('/api/v1/registrations', { user: data }).then(function (data) {
-	      localStorage.setItem('phoenixAuthToken', data.jwt);
-
-	      dispatch({
-	        type: _constants2.default.CURRENT_USER,
-	        currentUser: data.user
-	      });
-
-	      dispatch((0, _reactRouterRedux.pushPath)('/'));
-	    }).catch(function (error) {
-	      error.response.json().then(function (errorJSON) {
-	        dispatch({
-	          type: _constants2.default.REGISTRATIONS_ERROR,
-	          errors: errorJSON.errors
-	        });
-	      });
-	    });
-	  };
-	};
-
-	exports.default = Actions;
 
 /***/ }
 /******/ ]);
