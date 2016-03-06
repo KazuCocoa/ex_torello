@@ -11,6 +11,9 @@ defmodule ExTrello.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+
+    plug Guardian.Plug.VerifyHeader
+    plug Guardian.Plug.LoadResource
   end
 
   scope "/api", ExTrello do
@@ -18,8 +21,12 @@ defmodule ExTrello.Router do
 
     scope "/v1" do
       post "/registrations", RegistrationController, :create
-    end
 
+      post "/sessions", SessionController, :create
+      delete "/sessions", SessionController, :delete
+
+      get "/current_user", CurrentUserController, :show
+    end
   end
 
 
