@@ -10,6 +10,7 @@ config :ex_trello, ExTrello.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
+  cache_static_lookup: false,
   check_origin: false,
   watchers: [
     node: ["node_modules/webpack/bin/webpack.js", "--watch", "--color"]
@@ -20,7 +21,6 @@ config :ex_trello, ExTrello.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
-      ~r{priv/gettext/.*(po)$},
       ~r{web/views/.*(ex)$},
       ~r{web/templates/.*(eex)$}
     ]
@@ -42,3 +42,7 @@ config :ex_trello, ExTrello.Repo,
   database: "ex_trello_dev",
   hostname: "localhost",
   pool_size: 10
+
+# Guardian configuration
+config :guardian, Guardian,
+  secret_key: "W9cDv9fjPtsYv2gItOcFb5PzmRzqGkrOsJGmby0KpBOlHJIlhxMKFmIlcCG9PVFQ"

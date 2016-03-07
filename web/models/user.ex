@@ -1,6 +1,10 @@
 defmodule ExTrello.User do
   use ExTrello.Web, :model
 
+  alias ExTrello.{Board, UserBoard}
+
+  @derive {Poison.Encoder, only: [:id, :first_name, :last_name, :email]}
+
   schema "users" do
     field :first_name, :string
     field :last_name, :string
@@ -8,7 +12,7 @@ defmodule ExTrello.User do
     field :encrypted_password, :string
     field :password, :string, virtual: true
 
-    has_many :owned_boards, ExTrello.Board
+    has_many :owned_boards, Board
     has_many :user_boards, UserBoard
     has_many :boards, through: [:user_boards, :board]
 
@@ -17,8 +21,6 @@ defmodule ExTrello.User do
 
   @required_fields ~w(first_name last_name email password)
   @optional_fields ~w(encrypted_password)
-
-  @derive {Poison.Encoder, only: [:id, :first_name, :last_name, :email]}
 
   @doc """
   Creates a changeset based on the `model` and `params`.

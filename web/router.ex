@@ -11,13 +11,12 @@ defmodule ExTrello.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-
     plug Guardian.Plug.VerifyHeader
     plug Guardian.Plug.LoadResource
   end
 
   scope "/api", ExTrello do
-    pipe_through :api # Use the default browser stack
+    pipe_through :api
 
     scope "/v1" do
       post "/registrations", RegistrationController, :create
@@ -33,10 +32,9 @@ defmodule ExTrello.Router do
     end
   end
 
-
   scope "/", ExTrello do
     pipe_through :browser # Use the default browser stack
+
     get "*path", PageController, :index
   end
-
 end

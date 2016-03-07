@@ -35,7 +35,6 @@ defmodule ExTrello.Web do
       import Ecto.Query, only: [from: 1, from: 2]
 
       import ExTrello.Router.Helpers
-      import ExTrello.Gettext
     end
   end
 
@@ -50,8 +49,6 @@ defmodule ExTrello.Web do
       use Phoenix.HTML
 
       import ExTrello.Router.Helpers
-      import ExTrello.ErrorHelpers
-      import ExTrello.Gettext
     end
   end
 
@@ -68,7 +65,6 @@ defmodule ExTrello.Web do
       alias ExTrello.Repo
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
-      import ExTrello.Gettext
     end
   end
 

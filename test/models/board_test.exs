@@ -1,5 +1,7 @@
 defmodule ExTrello.BoardTest do
-  use ExTrello.ModelCase
+  use ExTrello.ModelCase, async: true
+
+  import ExTrello.Factory
 
   alias ExTrello.Board
 
@@ -7,8 +9,15 @@ defmodule ExTrello.BoardTest do
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
-    changeset = Board.changeset(%Board{}, @valid_attrs)
+    user = create(:user)
+    attributes = @valid_attrs
+      |> Map.put(:user_id, user.id)
+
+    changeset = Board.changeset(build(:board), attributes)
     assert changeset.valid?
+
+    %{slug: slug} = changeset.changes
+    assert slug == "some-content"
   end
 
   test "changeset with invalid attributes" do

@@ -10,9 +10,10 @@ defmodule ExTrello do
       # Start the endpoint when the application starts
       supervisor(ExTrello.Endpoint, []),
       # Start the Ecto repository
-      supervisor(ExTrello.Repo, []),
+      worker(ExTrello.Repo, []),
       # Here you could define other workers and supervisors as children
       # worker(ExTrello.Worker, [arg1, arg2, arg3]),
+      supervisor(ExTrello.BoardChannel.Supervisor, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

@@ -1,15 +1,16 @@
 {
   "name": "ex_trello",
   "version": "1.0.0",
-  "description": "Trello with Elixir x Phoenix",
+  "description": "Trello tribute done in Elixir and Phoenix.",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "kazucocoa",
-  "license": "MIT",
+  "author": "Ricardo García Vega",
+  "license": "ISC",
   "private": true,
   "engines": {
     "node": "5.3.0",

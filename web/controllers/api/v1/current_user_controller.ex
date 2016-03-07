@@ -1,7 +1,7 @@
 defmodule ExTrello.CurrentUserController do
   use ExTrello.Web, :controller
 
-  plug Guardian.Plug.EnsureAuthenticated, handler: PhoenixTrello.SessionController
+  plug Guardian.Plug.EnsureAuthenticated, handler: ExTrello.SessionController
 
   def show(conn, _) do
     case decode_and_verify_token(conn) do

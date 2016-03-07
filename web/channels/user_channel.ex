@@ -1,17 +1,13 @@
 defmodule ExTrello.UserChannel do
   use ExTrello.Web, :channel
 
-  alias ExTrello.Board
+  def join("users:" <> user_id, _params, socket) do
+    current_user = socket.assigns.current_user
 
-  def join("boards:" <> board_id, _params, socket) do
-    board = get_current_board(socket, board_id)
-
-    {:ok, %{board: board}, assign(socket, :board, board)}
-  end
-
-  defp get_current_board(socket, board_id) do
-    socket.assigns.current_user
-    |> assoc(:boards)
-    |> Repo.get(board_id)
+    if String.to_integer(user_id) == current_user.id do
+      {:ok, socket}
+    else
+      {:error, %{reason: "Invalid user"}}
+    end
   end
 end

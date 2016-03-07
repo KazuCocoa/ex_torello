@@ -33,7 +33,7 @@ defmodule ExTrello.Endpoint do
   plug Plug.Session,
     store: :cookie,
     key: "_ex_trello_key",
-    signing_salt: "onTN4EB/"
+    signing_salt: "utLqshqa"
 
   plug ExTrello.Router
 end
