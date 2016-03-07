@@ -10,7 +10,6 @@ defmodule ExTrello.SessionController do
 
         conn
         |> put_status(:created)
-        |> IO.inspect
         |> render("show.json", jwt: jwt, user: user)
 
       :error ->

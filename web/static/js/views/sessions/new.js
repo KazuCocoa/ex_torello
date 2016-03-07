@@ -47,7 +47,7 @@ class SessionsNew extends React.Component {
                 id="user_email"
                 placeholder="Email"
                 required="true"
-                defaultValue="john@phoenix-trello.com"/>
+                defaultValue="kazu@example.com"/>
             </div>
             <div className="field">
               <input

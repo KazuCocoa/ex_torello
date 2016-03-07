@@ -2,9 +2,9 @@ alias ExTrello.{Repo, User}
 
 [
   %{
-    first_name: "John",
-    last_name: "Doe",
-    email: "john@phoenix-trello.com",
+    first_name: "Kazu",
+    last_name: "Matsu",
+    email: "kazu@example.com",
     password: "12345678"
   },
 ]
