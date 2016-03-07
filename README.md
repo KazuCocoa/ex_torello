@@ -1,5 +1,7 @@
-# Phoenix Trello
-[![Build Status](https://travis-ci.org/bigardone/phoenix-trello.svg?branch=master)](https://travis-ci.org/bigardone/phoenix-trello)
+# Ex Trello
+
+This repository is based on https://github.com/bigardone/phoenix-trello as my practice.
+
 
 
 [Trello](http://trello.com) tribute done with [Elixir](https://github.com/elixir-lang/elixir), [Phoenix Framework](https://github.com/phoenixframework/phoenix), [Webpack](https://github.com/webpack/webpack), [React](https://github.com/facebook/react) and [Redux](https://github.com/rackt/redux).
