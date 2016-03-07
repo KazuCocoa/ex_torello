@@ -11,7 +11,7 @@ class RegistrationsNew extends React.Component {
   }
 
   _handleSubmit(e) {
-    e.preventDedault();
+    e.preventDefault();
 
     const { dispatch } = this.props;
 
@@ -64,6 +64,7 @@ class RegistrationsNew extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => ({
   errors: state.registration.errors,
 });

@@ -11,13 +11,13 @@ import CardsShowView               from '../views/cards/show';
 export default (
   <Route component={MainLayout}>
     <Route path="/sign_up" component={RegistrationsNew} />
-    <Route path="/sign_in" component={SessionNew} />
+    <Route path="/sign_in" component={SessionsNew} />
 
     <Route path="/" component={AuthenticatedContainer}>
       <IndexRoute component={HomeIndexView} />
 
-      <Route path="/boards/:id" component={BoardsShowView} >
-        <Route path="cards/:id" component={CardsShowView} />
+      <Route path="/boards/:id" component={BoardsShowView}>
+        <Route path="cards/:id" component={CardsShowView}/>
       </Route>
     </Route>
   </Route>

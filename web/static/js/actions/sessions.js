@@ -1,13 +1,39 @@
 import { routeActions }                   from 'react-router-redux';
 import Constants                          from '../constants';
-import { Socket }                         from '../phoenix';
+import { Socket }                         from 'phoenix';
 import { httpGet, httpPost, httpDelete }  from '../utils';
 
-function setCurrentUser(dispatch, user) {
+export function setCurrentUser(dispatch, user) {
   dispatch({
     type: Constants.CURRENT_USER,
-    currentUSer: user,
-  })
+    currentUser: user,
+  });
+
+  const socket = new Socket('/socket', {
+    params: { token: localStorage.getItem('phoenixAuthToken') },
+    logger: (kind, msg, data) => { console.log(`${kind}: ${msg}`, data); },
+  });
+
+  socket.connect();
+
+  const channel = socket.channel(`users:${user.id}`);
+
+  if (channel.state != 'joined') {
+    channel.join().receive('ok', () => {
+      dispatch({
+          type: Constants.SOCKET_CONNECTED,
+          socket: socket,
+          channel: channel,
+        });
+    });
+  }
+
+  channel.on('boards:add', (msg) => {
+    dispatch({
+        type: Constants.BOARDS_ADDED,
+        board: msg.board,
+      });
+  });
 };
 
 const Actions = {
@@ -40,6 +66,8 @@ const Actions = {
 
   currentUser: () => {
     return dispatch => {
+      const authToken = localStorage.getItem('phoenixAuthToken');
+
       httpGet('/api/v1/current_user')
       .then(function(data) {
         setCurrentUser(dispatch, data);
@@ -57,11 +85,11 @@ const Actions = {
       .then((data) => {
         localStorage.removeItem('phoenixAuthToken');
 
-        dispatch({
-          type: Constants.USER_SIGNED_OUT,
-        });
+        dispatch({ type: Constants.USER_SIGNED_OUT, });
 
         dispatch(routeActions.push('/sign_in'));
+
+        dispatch({ type: Constants.BOARDS_FULL_RESET });
       })
       .catch(function(error) {
         console.log(error);
@@ -71,26 +99,3 @@ const Actions = {
 };
 
 export default Actions;
-
-export function setCurrentUser(dispatch, user) {
-  dispatch({
-    type: Constants.CCURRENT_USER,
-    currentUser: user,
-  });
-
-  const socket = new Socket('/socket', {
-    params: {token: localStorage.getItem('phoenixAuthToken')},
-  });
-
-  socket.connect();
-
-  const channel = socket.channel(`users:${user.id}`);
-
-  channel.join().receive('ok', () => {
-    dispatch({
-      type: Constants.SOCKET_CONNECTED,
-      socket: socket,
-      channel: channel,
-    });
-  });
-};
