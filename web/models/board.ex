@@ -9,6 +9,9 @@ defmodule ExTrello.Board do
     field :name, :string
     belongs_to :user, ExTrello.User
 
+    has_many :user_boards, UserBoard
+    has_many :members, through: [:user_boards, :user]
+
     timestamps
   end
 

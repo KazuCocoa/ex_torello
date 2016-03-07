@@ -9,6 +9,8 @@ defmodule ExTrello.User do
     field :password, :string, virtual: true
 
     has_many :owned_boards, ExTrello.Board
+    has_many :user_boards, UserBoard
+    has_many :boards, through: [:user_boards, :board]
 
     timestamps
   end

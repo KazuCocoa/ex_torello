@@ -27,7 +27,9 @@ defmodule ExTrello.Router do
 
       get "/current_user", CurrentUserController, :show
 
-      resources "boards", BoardController, only: [:index, :create]
+      resources "boards", BoardController, only: [:index, :create] do
+        resources "cards", CardController, only: [:show]
+      end
     end
   end
 
